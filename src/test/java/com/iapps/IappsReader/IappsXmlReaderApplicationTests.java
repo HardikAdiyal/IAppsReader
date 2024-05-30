@@ -18,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
@@ -67,7 +68,7 @@ class IappsXmlReaderApplicationTests {
 		EPaperManagementServiceImpl mockedService = mock(EPaperManagementServiceImpl.class);
 		when(mockedService.saveXmlFile(file)).thenReturn(1L);
 
-		mockMvc.perform(multipart("/epaper/upload").file(file)).andExpect(status().is(400));
+		mockMvc.perform(multipart("/epaper/upload").file(file)).andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
 	}
 
 	@Test
@@ -78,7 +79,7 @@ class IappsXmlReaderApplicationTests {
 		EPaperManagementServiceImpl mockedService = mock(EPaperManagementServiceImpl.class);
 		when(mockedService.saveXmlFile(file)).thenReturn(1L);
 
-		mockMvc.perform(multipart("/epaper/upload").file(file)).andExpect(status().is(400));
+		mockMvc.perform(multipart("/epaper/upload").file(file)).andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
 	}
 
 	@Test

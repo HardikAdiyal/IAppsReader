@@ -1,6 +1,6 @@
 package com.iapps.IappsReader.services;
 
-import java.util.Date;
+import java.io.IOException;
 
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -11,9 +11,9 @@ import com.iapps.IappsReader.model.SearchResponseModel;
 @Service
 public interface EPaperManagementService {
 
-	Long saveXmlFile(MultipartFile file);
+	Long saveXmlFile(MultipartFile file) throws IOException;
 
-	Page<SearchResponseModel> searchPaper(String search, String sortOn, Date fromDate, Date toDate, int page,
+	Page<SearchResponseModel> searchPaper(String search, String sortOn, Long fromDate, Long toDate, int page,
 			int pageSize);
 
 }

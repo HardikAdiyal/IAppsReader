@@ -1,7 +1,5 @@
 package com.iapps.IappsReader.repository;
 
-import java.util.Date;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,7 +19,7 @@ public interface EPaperInfoRepository extends JpaRepository<EPaperInfoEntity, Lo
 	           "AND (cast(:fromDate as timestamp) IS NULL OR e.uploadedDate >= :fromDate) " +
 	           "AND (cast(:toDate as timestamp) IS NULL OR e.uploadedDate <= :toDate)")
 		Page<SearchResponseModel> getSearchResult(@Param("search") String search, 
-	                                              @Param("fromDate") Date fromDate, 
-	                                              @Param("toDate") Date toDate, 
+	                                              @Param("fromDate") Long fromDate, 
+	                                              @Param("toDate") Long toDate, 
 	                                              Pageable pageable);
 }

@@ -1,7 +1,5 @@
 package com.iapps.IappsReader.services.impl;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
@@ -45,51 +43,42 @@ public class EPaperManagementServiceImpl implements EPaperManagementService {
 	private EPaperInfoRepository ePaperInfoRepository;
 
 	@Override
-	public Long saveXmlFile(MultipartFile file) {
+	public Long saveXmlFile(MultipartFile file) throws IOException {
 		LOGGER.info("EPaperManagementServiceImpl : saveXmlFile");
 		LOGGER.info("File to be upload: {}", file.getOriginalFilename());
 
-		try {
-			// Save uploaded file to a temporary location
-			File tempFile = File.createTempFile("xmlUpload", ".xml");
-			try (FileOutputStream fos = new FileOutputStream(tempFile)) {
-				fos.write(file.getBytes());
-			}
-			LOGGER.info("Validating File: {}", file.getOriginalFilename());
+		LOGGER.info("Validating File: {}", file.getOriginalFilename());
 
-			boolean isValid = validateXMLFile(tempFile);
-			if (!isValid) {
-				LOGGER.error("Invalid XML file format");
-				throw new CustomException("Invalid XML file format.");
-			}
-			LOGGER.info("XML file validated and Started Parsing file...");
-
-			XmlRequestModel xmlRequestModel = convertFileToModel(file.getInputStream());
-			if (xmlRequestModel == null) {
-				LOGGER.error("Internal server error while parsing file to class");
-				throw new CustomException("XML file is not converted to Model class.");
-			}
-
-			LOGGER.info("Converting model to entity for saving in DB.");
-			EPaperInfoEntity entity = convertModelToEntity(xmlRequestModel, file.getOriginalFilename());
-			entity = ePaperInfoRepository.save(entity);
-			return entity.getId();
-		} catch (IOException e) {
-			throw new CustomException("Internal Server error.", e.getCause());
+		boolean isValid = validateXMLFile(file.getInputStream(), file.getOriginalFilename());
+		if (!isValid) {
+			LOGGER.error("Invalid XML file format");
+			throw new CustomException("Invalid XML file format.");
 		}
+		LOGGER.info("XML file validated and Started Parsing file...");
+
+		XmlRequestModel xmlRequestModel = convertFileToModel(file.getInputStream());
+		if (xmlRequestModel == null) {
+			LOGGER.error("Internal server error while parsing file to class");
+			throw new CustomException("XML file is not converted to Model class.");
+		}
+
+		LOGGER.info("Converting model to entity for saving in DB.");
+		EPaperInfoEntity entity = convertModelToEntity(xmlRequestModel, file.getOriginalFilename());
+		entity = ePaperInfoRepository.save(entity);
+		return entity.getId();
 	}
 
-	private boolean validateXMLFile(File xmlFile) {
+	private boolean validateXMLFile(InputStream inputStream, String fileName) {
 		try {
 			ClassPathResource xsdResource = new ClassPathResource("structure.xsd");
 			InputStream xsdInputStream = xsdResource.getInputStream();
 			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			Schema schema = schemaFactory.newSchema(new StreamSource(xsdInputStream));
 			Validator validator = schema.newValidator();
-			validator.validate(new StreamSource(xmlFile));
+			validator.validate(new StreamSource(inputStream));
 			return true;
 		} catch (IOException | SAXException e) {
-			LOGGER.error("Server error while Validating XML file, {}, {}", xmlFile.getName(), e.getLocalizedMessage());
+			LOGGER.error("Server error while Validating XML file, {}, {}", fileName, e.getLocalizedMessage());
 			return false;
 		}
 	}
@@ -119,7 +108,7 @@ public class EPaperManagementServiceImpl implements EPaperManagementService {
 	}
 
 	@Override
-	public Page<SearchResponseModel> searchPaper(String search, String sortOn, Date fromDate, Date toDate, int page,
+	public Page<SearchResponseModel> searchPaper(String search, String sortOn, Long fromDate, Long toDate, int page,
 			int pageSize) {
 		LOGGER.info("EPaperManagementServiceImpl : searchPaper");
 		Pageable pageable = PageRequest.of(page, pageSize, Direction.DESC,
