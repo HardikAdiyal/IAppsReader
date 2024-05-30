@@ -18,8 +18,8 @@
     - parameters(All parameters are optional.):
         - search: filter data based on search string from fileName or Paper name stored in table
       - sortOn: Pass any field from result to perform sorting(Default sort on "Id"). All data will be order by descending by default.
-       - fromDate: Filter by any date(Date format: yyyy-mm-dd).
-       - toDate: Filter by any date(Date format: yyyy-mm-dd)
+       - fromDate: Filter by any date. Need to pass timestamp here like(1717066128).
+       - toDate: Filter by any date. Need to pass timestamp here like(1717066128).
        - page: Page number, If want to jump to any specific page. Default page is 0.
        - pageSize: If want to resize page elements. Default size is 10.
 
@@ -28,5 +28,5 @@
 ### Steps to Run/Deploy 
 1. Navigate to the project directory and go inside of it
 2. Run below command to run the application and PostgresSQL(Please make sure Port: 8080 and 5432 are not running in the system)
-	- 	docker-compose up
+	- 	docker compose up
 3. Application server will run on Port 8080 and DB server is on 5432
