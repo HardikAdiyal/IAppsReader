@@ -14,6 +14,6 @@ public class SearchResponseModel {
 	private Double width;
 	private Double height;
 	private Double dpi;
-	private String finalName;
+	private String fileName;
 
 }

@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MultipartException;
 
-import com.iapps.IappsReader.model.ErrorResponse;
-
 @ControllerAdvice
 public class GlobalExceptionHandler {
 

@@ -35,7 +35,18 @@ public class EPaperManagementController {
 			@RequestParam(name = "file", required = true) MultipartFile file) {
 		LOGGER.info("EPaperManagementController : uploadPaperXmlFile");
 		try {
+			if (file.isEmpty()) {
+				LOGGER.error("Empty XML file.");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new UploadFileResponseModel(null, "Provide appropriate XML file.", null));
+			}
+			if (!(file.getContentType().contains("text/xml") || file.getContentType().contains("application/xml"))) {
+				LOGGER.error("Invalid XML file");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new UploadFileResponseModel(null, "Invalid XML file.", null));
+			}
 			Long id = ePaperManagementService.saveXmlFile(file);
+			LOGGER.info("File stored successfullt with Id: {}", id);
 			return ResponseEntity.ok(new UploadFileResponseModel("File Uploaded successfully...", null, id));
 		} catch (CustomException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)

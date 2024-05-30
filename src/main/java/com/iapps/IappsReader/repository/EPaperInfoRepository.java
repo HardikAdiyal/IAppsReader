@@ -17,7 +17,7 @@ public interface EPaperInfoRepository extends JpaRepository<EPaperInfoEntity, Lo
 
 	 @Query("SELECT new com.iapps.IappsReader.model.SearchResponseModel(e.id, e.paperName, e.width, e.height, e.dpi, e.fileName) " +
 	           "FROM EPaperInfoEntity e " +
-	           "WHERE (:search IS NULL OR e.paperName LIKE %:search%) " +
+	           "WHERE (:search IS NULL OR e.paperName LIKE %:search% OR e.fileName LIKE %:search%) " +
 	           "AND (cast(:fromDate as timestamp) IS NULL OR e.uploadedDate >= :fromDate) " +
 	           "AND (cast(:toDate as timestamp) IS NULL OR e.uploadedDate <= :toDate)")
 		Page<SearchResponseModel> getSearchResult(@Param("search") String search, 
