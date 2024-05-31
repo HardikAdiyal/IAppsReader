@@ -117,7 +117,7 @@ public class EPaperManagementServiceImpl implements EPaperManagementService {
 		if (sortOn != null && !sortOn.isBlank() && !isValidField(sortOn)) {
 			throw new CustomException("Invlid Sort on field.");
 		}
-
+		search = search != null && !search.isBlank() ? search.toLowerCase() : null;
 		return ePaperInfoRepository.getSearchResult(search, fromDate, toDate, pageable);
 	}
 
