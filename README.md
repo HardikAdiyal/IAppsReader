@@ -18,8 +18,8 @@
     - parameters(All parameters are optional.):
         - search: filter data based on search string from fileName or Paper name stored in table
       - sortOn: Pass any field from result to perform sorting(Default sort on "Id"). All data will be order by descending by default.
-       - fromDate: Filter by any date. Need to pass timestamp here like(1717066128).
-       - toDate: Filter by any date. Need to pass timestamp here like(1717066128).
+       - fromDate: Filter by any date. Need to pass timestamp milliseconds here like(1717092943000).
+       - toDate: Filter by any date.Need to pass timestamp milliseconds here like(1717092943000).
        - page: Page number, If want to jump to any specific page. Default page is 0.
        - pageSize: If want to resize page elements. Default size is 10.
 

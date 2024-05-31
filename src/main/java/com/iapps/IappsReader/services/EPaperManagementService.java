@@ -3,12 +3,10 @@ package com.iapps.IappsReader.services;
 import java.io.IOException;
 
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.iapps.IappsReader.model.SearchResponseModel;
 
-@Service
 public interface EPaperManagementService {
 
 	Long saveXmlFile(MultipartFile file) throws IOException;
