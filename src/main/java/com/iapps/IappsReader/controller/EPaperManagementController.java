@@ -35,11 +35,13 @@ public class EPaperManagementController {
 	public ResponseEntity<UploadFileResponseModel> uploadPaperXmlFile(
 			@RequestParam(name = "file", required = true) MultipartFile file) throws IOException {
 		LOGGER.info("EPaperManagementController : uploadPaperXmlFile");
+		// VALIDATION FOR EMPTY FILE
 		if (file.isEmpty()) {
 			LOGGER.error("Empty XML file.");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.body(new UploadFileResponseModel(null, "Provide appropriate XML file.", null));
 		}
+		// VALIDATION FOR FILE CONTENT TYPE AS PER REQUIREMENT
 		if (!ALLOWED_CONTENT_TYPES.contains(file.getContentType())) {
 			LOGGER.error("Invalid XML file");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
